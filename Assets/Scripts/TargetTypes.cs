@@ -1,0 +1,18 @@
+﻿using System;
+
+// Token: 0x02000535 RID: 1333
+public enum TargetTypes
+{
+	// Token: 0x0400226F RID: 8815
+	TARGET,
+	// Token: 0x04002270 RID: 8816
+	TARGET_LOCAL_POSITION,
+	// Token: 0x04002271 RID: 8817
+	AVATAR,
+	// Token: 0x04002272 RID: 8818
+	AVATAR_TARGET,
+	// Token: 0x04002273 RID: 8819
+	PET_PLAY_HOME,
+	// Token: 0x04002274 RID: 8820
+	TARGET_PARENT
+}

@@ -1,0 +1,20 @@
+﻿using System;
+
+// Token: 0x02001196 RID: 4502
+public enum SnEventType
+{
+	// Token: 0x04006DC4 RID: 28100
+	NONE,
+	// Token: 0x04006DC5 RID: 28101
+	PLAY,
+	// Token: 0x04006DC6 RID: 28102
+	PAUSE,
+	// Token: 0x04006DC7 RID: 28103
+	STOP,
+	// Token: 0x04006DC8 RID: 28104
+	END,
+	// Token: 0x04006DC9 RID: 28105
+	END_QUEUE,
+	// Token: 0x04006DCA RID: 28106
+	TRIGGER
+}

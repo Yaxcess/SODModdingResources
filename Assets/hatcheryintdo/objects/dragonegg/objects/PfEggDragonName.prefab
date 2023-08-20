@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1833774867948603307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751748914065898737}
+  - component: {fileID: -327317872770161853}
+  m_Layer: 0
+  m_Name: PfEggDragonName
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1751748914065898737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833774867948603307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-327317872770161853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833774867948603307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16786179008ed04f83456c3426bef3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ClickSound:
+    _Settings:
+      _Channel: 
+      _Pool: 
+      _Priority: 0
+      _Volume: 1
+      _Pitch: 1
+      _MinVolume: 0
+      _MaxVolume: 1
+      _RolloffFactor: 0.1
+      _RolloffBegin: 0
+      _RolloffEnd: Infinity
+      _UseRolloffDistance: 0
+      _Loop: 0
+      _ReleaseOnStop: 1
+      _FollowListener: 0
+      _EventTarget: {fileID: 0}
+    _AudioClip: {fileID: 0}
+    _Triggers:
+      _TriggerData: []
+  _RolloverSound:
+    _Settings:
+      _Channel: 
+      _Pool: 
+      _Priority: 0
+      _Volume: 1
+      _Pitch: 1
+      _MinVolume: 0
+      _MaxVolume: 1
+      _RolloffFactor: 0.1
+      _RolloffBegin: 0
+      _RolloffEnd: Infinity
+      _UseRolloffDistance: 0
+      _Loop: 0
+      _ReleaseOnStop: 1
+      _FollowListener: 0
+      _EventTarget: {fileID: 0}
+    _AudioClip: {fileID: 0}
+    _Triggers:
+      _TriggerData: []
+  _RolloverRandomSound:
+    _Settings:
+      _Channel: 
+      _Pool: 
+      _Priority: 0
+      _Volume: 1
+      _Pitch: 1
+      _MinVolume: 0
+      _MaxVolume: 1
+      _RolloffFactor: 0.1
+      _RolloffBegin: 0
+      _RolloffEnd: Infinity
+      _UseRolloffDistance: 0
+      _Loop: 0
+      _ReleaseOnStop: 1
+      _FollowListener: 0
+      _EventTarget: {fileID: 0}
+    _ClipList: []
+  _Draw: 0
+  _Active: 1
+  _UseGlobalActive: 1
+  _AvatarWalkTo: 1
+  _LoadLevel: 
+  _StartMarker: 
+  _ActivateObject: {fileID: 0}
+  _MessageObject: {fileID: 0}
+  _HighlightMaterial: {fileID: 0}
+  _MouseOverAnim: 
+  _MouseExitAnim: 
+  _RollOverCursorName: 
+  _Range: 0
+  _RangeAngle: 20
+  _RangeOffset: {x: 0, y: 0, z: 0}
+  _Offset: {x: 0, y: 0, z: 0}
+  _RolloverStopOnMouseExit: 1
+  _RolloverReplayDelay: 0
+  _RolloverTime: 1
+  _FirstOnly: 0
+  _StopVOPoolOnClick: 1
+  _StoreID: 0
+  _CoinsStoreInfo:
+    _Store: 
+    _Category: 
+  _ItemID: 0
+  _RedeemTicketItemID: 0
+  _ForMembersOnly: 0
+  _AllowMultiple: 0
+  _BecomeAMemberText:
+    _Text: You need to become a member to interact with this item.
+    _ID: 0
+  _PurchaseItemText:
+    _Text: Would you like to purchase this object for xxxx gems?
+    _ID: 0
+  _BuyFundsText:
+    _Text: Would you like to buy funds?
+    _ID: 0
+  _ItemPurchaseFailedText:
+    _Text: Item purchase failed.
+    _ID: 0
+  _ItemPurchaseSuccessText:
+    _Text: Item purchased! Please check your inventory.
+    _ID: 0
+  _PointLockedText:
+    _Text: You need to have {{Points}} points to buy this {{Item}}.
+    _ID: 0
+  _PicksUpEggText:
+    _Text: 
+    _ID: 0
+  _ChooseEggText:
+    _Text: Do you want to choose this egg?
+    _ID: 0
+  _DragonType: 5
+  _ObProximityHatch: {fileID: 0}

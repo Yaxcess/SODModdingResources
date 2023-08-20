@@ -1,0 +1,26 @@
+﻿using System;
+
+// Token: 0x0200096E RID: 2414
+public enum RaisedPetStage
+{
+	// Token: 0x04003A65 RID: 14949
+	NONE,
+	// Token: 0x04003A66 RID: 14950
+	POWERUP,
+	// Token: 0x04003A67 RID: 14951
+	FIND,
+	// Token: 0x04003A68 RID: 14952
+	EGGINHAND,
+	// Token: 0x04003A69 RID: 14953
+	HATCHING,
+	// Token: 0x04003A6A RID: 14954
+	BABY,
+	// Token: 0x04003A6B RID: 14955
+	CHILD,
+	// Token: 0x04003A6C RID: 14956
+	TEEN,
+	// Token: 0x04003A6D RID: 14957
+	ADULT,
+	// Token: 0x04003A6E RID: 14958
+	TITAN
+}

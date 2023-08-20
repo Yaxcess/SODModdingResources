@@ -1,0 +1,25 @@
+﻿using System;
+
+namespace SquadTactics
+{
+	// Token: 0x0200161B RID: 5659
+	public enum Stat
+	{
+		// Token: 0x04008AE0 RID: 35552
+		CRITICALCHANCE,
+		// Token: 0x04008AE1 RID: 35553
+		CRITICALMULTIPLIER,
+		// Token: 0x04008AE2 RID: 35554
+		DODGE,
+		// Token: 0x04008AE3 RID: 35555
+		FIREPOWER,
+		// Token: 0x04008AE4 RID: 35556
+		HEALINGPOWER,
+		// Token: 0x04008AE5 RID: 35557
+		HEALTH,
+		// Token: 0x04008AE6 RID: 35558
+		MOVEMENT,
+		// Token: 0x04008AE7 RID: 35559
+		STRENGTH
+	}
+}
