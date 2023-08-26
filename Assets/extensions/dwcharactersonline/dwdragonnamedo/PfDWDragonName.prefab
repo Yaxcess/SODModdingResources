@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5403477502598250196}
   - component: {fileID: -4873868226497278789}
   - component: {fileID: 2676792958847182194}
+  - component: {fileID: 4593126631348465383}
   m_Layer: 10
   m_Name: PfDWDragonName
   m_TagString: Untagged
@@ -581,6 +582,19 @@ MonoBehaviour:
   _LoopQueue: 0
   _RandomQueue: 0
   _Draw: 0
+--- !u!114 &4593126631348465383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828731014733903291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 277d410ce129ed7499270a2cec47ea31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _FlightInformation: []
 --- !u!1 &2000864890518707541
 GameObject:
   m_ObjectHideFlags: 0
