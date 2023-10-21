@@ -1,7 +1,7 @@
 Shader "Yax/PropertiesShader"
 /*This shader doesn't have any functionality other than containing properties.
 It's just needed for customising values that will be used in og sod shader it will be replaced with at runtime.
-Replacing shaders requires client modding, example ShaderSwap method can be found in ExampleScriptForShaderSwap.cs*/
+Replacing shaders requires client modding. You can use ShaderSwap BepInEx5 plugin or raw ShaderSwap method(for direct assembly editing)*/
 {
     Properties
             {
