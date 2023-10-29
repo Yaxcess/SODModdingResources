@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShaderSwap : MonoBehaviour
 {
-    void ShaderSwap()
+    void ShaderSwapM()
     {
         Material[] materials = GameObject.FindObjectsOfType<Material>();
         foreach (Material material in materials)

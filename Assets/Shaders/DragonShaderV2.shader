@@ -275,7 +275,7 @@ Shader "Yax/DragonShaderV2"
                                                                                                 float3 mkTexColor = mKTex * _MKGlowTexColor * _MKGlowTexStrength * 0.1f;
                                                                                                 
                                                                                                 finalColor += diffuse + specular + emissiveColor * _EmissionStrength + mkTexColor;
-                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1, 0);
+                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1, 1);
                                                                                                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                                                                                                 return finalRGBA;
             }
@@ -466,7 +466,7 @@ Shader "Yax/DragonShaderV2"
                                                                                                 float3 mkTexColor = mKTex * _MKGlowTexColor * _MKGlowTexStrength * 0.1f;
 
                                                                                                 finalColor += diffuse + specular + emissiveColor * _EmissionStrength + mkTexColor;
-                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1,0);
+                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1,1);
                                                                                                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                                                                                                 return finalRGBA;
             }
