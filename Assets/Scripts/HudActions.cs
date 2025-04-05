@@ -1,0 +1,16 @@
+﻿using System;
+
+// Token: 0x020006B6 RID: 1718
+public enum HudActions
+{
+	// Token: 0x04002C2B RID: 11307
+	DISABLE,
+	// Token: 0x04002C2C RID: 11308
+	ENABLE,
+	// Token: 0x04002C2D RID: 11309
+	FLASH,
+	// Token: 0x04002C2E RID: 11310
+	VISIBLE,
+	// Token: 0x04002C2F RID: 11311
+	INVISIBLE
+}
