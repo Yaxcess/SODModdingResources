@@ -42,3 +42,4 @@ Thumbs.db
 Thumbs.db.meta
 
 *.vscode
+.vsconfig
