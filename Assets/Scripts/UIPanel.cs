@@ -5,7 +5,7 @@ using UnityEngine;
 // Token: 0x02000FB1 RID: 4017
 [ExecuteInEditMode]
 
-public class UIPanel
+public class UIPanel : KAUI
 {
 	
 	// Token: 0x0400629B RID: 25243

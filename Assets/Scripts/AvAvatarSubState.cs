@@ -1,0 +1,24 @@
+﻿using System;
+
+// Token: 0x02000550 RID: 1360
+public enum AvAvatarSubState
+{
+	// Token: 0x0400231E RID: 8990
+	NORMAL,
+	// Token: 0x0400231F RID: 8991
+	SWIMMING,
+	// Token: 0x04002320 RID: 8992
+	FLYING,
+	// Token: 0x04002321 RID: 8993
+	SCUBA,
+	// Token: 0x04002322 RID: 8994
+	DIVESUIT,
+	// Token: 0x04002323 RID: 8995
+	GLIDING,
+	// Token: 0x04002324 RID: 8996
+	SKATING,
+	// Token: 0x04002325 RID: 8997
+	WALLCLIMB,
+	// Token: 0x04002326 RID: 8998
+	UWSWIMMING
+}

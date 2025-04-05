@@ -1,0 +1,16 @@
+﻿using System;
+
+// Token: 0x0200091D RID: 2333
+public enum ChatOptions
+{
+	// Token: 0x04003904 RID: 14596
+	CHAT_ROOM,
+	// Token: 0x04003905 RID: 14597
+	CHAT_SYSTEM,
+	// Token: 0x04003906 RID: 14598
+	CHAT_FRIENDS,
+	// Token: 0x04003907 RID: 14599
+	CHAT_CLANS,
+	// Token: 0x04003908 RID: 14600
+	CHAT_EMOTICON
+}

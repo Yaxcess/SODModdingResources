@@ -10,17 +10,17 @@ public class UISprite : UIBasicSprite
 	
 
 	// Token: 0x040062E1 RID: 25313
-	[HideInInspector]
+	//[HideInInspector]
 	[SerializeField]
 	private UIAtlas mAtlas;
 
 	// Token: 0x040062E2 RID: 25314
-	[HideInInspector]
+	//[HideInInspector]
 	[SerializeField]
 	private string mSpriteName;
 
 	// Token: 0x040062E3 RID: 25315
-	[HideInInspector]
+	//[HideInInspector]
 	[SerializeField]
 	private bool mFillCenter = true;
 
