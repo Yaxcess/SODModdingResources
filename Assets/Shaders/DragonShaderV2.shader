@@ -10,7 +10,7 @@ Shader "Yax/DragonShaderV2"
         [Header(Main texture)]
         [Space]
         _DetailTex("Detail (RGB)", 2D) = "white" {}
-        _TextureLayerStrength("Texture Layer Strength", Range(0, 1)) = 0.5
+        _TextureLayerStrength("Texture Layer Strength", Range(-10, 10)) = 1
         [Header(Color mask)]
         [Space]
         [NoScaleOffset] _ColorMask("ColorMask", 2D) = "white" {}
@@ -19,50 +19,52 @@ Shader "Yax/DragonShaderV2"
         [NoScaleOffset] _EmissiveMap("Emissive", 2D) = "white" {}
         [HDR] _EmissiveColor("Emissive Color", Color) = (0,0,0,1)
         [Toggle]_EmissionColorDep("Use blended Main Colors as Emissive Color", float) = 0
-        _EmissionStrength("Emission Strength", Range(0, 10)) = 0.5
+        _EmissionStrength("Emission Strength", Range(0, 10)) = 1
         [Header(Normal Map)]
         [Space]
         _BumpMap("Normal map", 2D) = "bump" {}
-        _NormalIntensity("Normal Intensity", Range(0, 10)) = 1
+        _NormalIntensity("Normal Intensity", Range(-10, 10)) = 1
         [Header(Specular)]
         [Space]
         _SpecColor("Specular Color", Color) = (1,1,1,1)
-        _SpecularIntensity("Specular Intensity", Range(0, 1)) = 0.5
-        _SpecularThreshold("Highlight Threshold", Range(0, 1)) = 0.1
+        _SpecularIntensity("Specular Intensity", Range(-10, 10)) = 1
+        [Header(Glossiness)]
+        [Space]
+        _Glossiness("Glossiness", Range(-10, 10)) = 1
+        _SpecularThreshold("Highlight Threshold", Range(0, 10)) = 1
         [Header(Decal)]
         [Space]
         _DecalMap("Decal", 2D) = "white" {}
         _DecalOpacity("Decal Opacity", Range(0, 1)) = 0
-        [Header(Glossiness)]
-        [Space]
-        _Glossiness("Glossiness", Range(0, 1)) = 0.5
         [Header(Glow(for algae vials))]
         [Space]
         _MKGlowTex("Glow Texture", 2D) = "black" {}
         _MKGlowColor("Glow Color", Color) = (1,1,1,1)
-        _MKGlowPower("Glow Power", Range(0, 2.5)) = 0
+        _MKGlowPower("Glow Power", Range(0, 10)) = 0
         _MKGlowTexColor("Glow Texture Color", Color) = (1,1,1,1)
-        _MKGlowTexStrength("Glow Texture Strength ", Range(0, 10)) = 0
+        _MKGlowTexStrength("Glow Texture Strength", Range(0, 10)) = 0
         [Header(Shadows)]
         [Space]
-        _ShadowDarkness("Shadow Darkness", Range(0.1, 10)) = 1
-        _ShadowsColor("Shadows Color", Color) = (0,0,0.1,1)
+        _ShadowIntensity("Shadow Intensity", Range(0, 10)) = 1
+        _ShadowsColor("Shadows Color", Color) = (0,0,0,1)
         [Header(Misc)]
         [Space]
-        _ColorSaturation("Colors Saturation", Range(0, 2)) = 1
-        _DiffuseIntensity("Lighting", Range(-10, 10)) = 1
+        _ColorSaturation("Colors Saturation", Range(0, 10)) = 1
+        _DiffuseIntensity("Lighting Intensity", Range(-10, 10)) = 1
     }
     
         SubShader{
         Tags {
-            "RenderType" = "Opaque"
+            "Queue"="AlphaTest"
+            "RenderType"="TransparentCutout"
+            "IgnoreProjector"="True"
         }
         Pass {
             Name "FORWARD"
             Tags {
                 "LightMode" = "ForwardBase"
             }
-            Cull Off
+            Cull Back
 
 
             CGPROGRAM
@@ -108,7 +110,7 @@ Shader "Yax/DragonShaderV2"
             uniform float _ColorSaturation;
             uniform float _DiffuseIntensity;
             uniform float _EmissionColorDep;
-            uniform float _ShadowDarkness;
+            uniform float _ShadowIntensity;
             uniform float4 _ShadowsColor;
             struct VertexInput {
                 float4 vertex : POSITION;
@@ -139,9 +141,8 @@ Shader "Yax/DragonShaderV2"
                 o.uv1 = v.texcoord1;
                 o.uv2 = v.texcoord2;
                 #if defined(LIGHTMAP_ON)
-    
-                float3 bakedLightmap = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.ambientOrLightmapUV.xy));
-                indirectDiffuse += bakedLightmap;
+                    float3 bakedLightmap = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.ambientOrLightmapUV.xy));
+                    indirectDiffuse += bakedLightmap;
                 #endif
                 #ifdef DYNAMICLIGHTMAP_ON
                     o.ambientOrLightmapUV.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
@@ -170,8 +171,8 @@ Shader "Yax/DragonShaderV2"
                 float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
                 float3 lightColor = _LightColor0.rgb;
                 float3 halfDirection = normalize(viewDirection + lightDirection);
-
                 float4 _DetailTex_var = tex2D(_DetailTex, TRANSFORM_TEX(i.uv0, _DetailTex));
+                clip(_DetailTex_var.a - 0.1);
                 float4 _DecalMap_var = tex2D(_DecalMap, i.uv0);
                 float4 maskColor = tex2D(_ColorMask, i.uv0);
                 float4 mKTex = tex2D(_MKGlowTex, i.uv0);
@@ -192,9 +193,9 @@ Shader "Yax/DragonShaderV2"
                 float redDot = maskColor.r;
 
                 // Calculate luminance of colors
-                float primaryLuminance = dot(_PrimaryColor.rgb, float3(0.3, 0.59, 0.11));
-                float secondaryLuminance = dot(_SecondaryColor.rgb, float3(0.3, 0.59, 0.11));
-                float tertiaryLuminance = dot(_TertiaryColor.rgb, float3(0.3, 0.59, 0.11));
+                float primaryLuminance = dot(_PrimaryColor.rgba, float3(0.3, 0.59, 0.11));
+                float secondaryLuminance = dot(_SecondaryColor.rgba, float3(0.3, 0.59, 0.11));
+                float tertiaryLuminance = dot(_TertiaryColor.rgba, float3(0.3, 0.59, 0.11));
 
                 // Calculate influence based on luminance and redDot for each color property
                 float primaryInfluence = lerp(0.02, 0.5, primaryLuminance) * (1.0 - redDot) + redDot;
@@ -211,21 +212,26 @@ Shader "Yax/DragonShaderV2"
                 blendedColor.rgb += _PrimaryColor.rgb * (lowDot * (1.0 - whiteDot) * (maskDot * (1.0 - redDot)) * max(0.0, 1.0 - lowDot));
 
                 // Calculate the final texture strength based on color influence for the red channel of the mask
-                float finalTextureStrength = _TextureLayerStrength * blendedColor * (1.0 - redDot) + redDot;
 
-                // Apply the texture layer over the blended color, with the calculated strength
-                float3 finalColor = lerp(blendedColor * _ColorSaturation, _DetailTex_var, finalTextureStrength) + _MKGlowColor * _MKGlowPower;
+                float detailLuminance = dot(_DetailTex_var.rgb, float3(0.3, 0.59, 0.11));
+
+                // Reduce texture strength in bright areas using inverse luminance
+                float finalTextureStrength = (_TextureLayerStrength * blendedColor * (1.0 - redDot) * (1.0 - detailLuminance)) + redDot;
+                
+                float3 finalColor = lerp(blendedColor.rgb, _DetailTex_var.rgb, finalTextureStrength);
+                finalColor = saturate(lerp(dot(finalColor, float3(0.3, 0.59, 0.11)), finalColor, _ColorSaturation));
+
 
                 emissiveColor.rgb *= (_EmissionColorDep == 1) ? blendedColor.rgb : _EmissiveColor.rgb;
 
                 ////// Lighting:
                                 UNITY_LIGHT_ATTENUATION(attenuation, i, i.posWorld.xyz);
-                                attenuation = pow(attenuation, _ShadowDarkness);
+                                attenuation = pow(attenuation, _ShadowIntensity);
                                 float3 attenColor = attenuation * _LightColor0.xyz;
                                 float Pi = 3.141592654;
                                 float InvPi = 0.31830988618;
                                 ///////// Gloss:
-                                                float smoothness = _Glossiness;
+                                                float smoothness = -_Glossiness;
                                                 float perceptualRoughness = 1.0 - smoothness;
                                                 perceptualRoughness = lerp(perceptualRoughness, 1.0, _SpecularThreshold);
                                                 float roughness = perceptualRoughness * perceptualRoughness;
@@ -276,7 +282,7 @@ Shader "Yax/DragonShaderV2"
                                                                                 float LdotH = saturate(dot(lightDirection, halfDirection));
                                                                                 float3 specularColor = ((_DetailTex_var.a * _SpecularIntensity * 0.02) * _SpecColor.rgb);
                                                                                 float specularMonochrome;
-                                                                                float3 diffuseColor = (_DetailTex_var.rgb * finalColor.rgb);
+                                                                                float3 diffuseColor = finalColor;
                                                                                 diffuseColor = EnergyConservationBetweenDiffuseAndSpecular(diffuseColor, specularColor, specularMonochrome);
                                                                                 specularMonochrome = 1.0 - specularMonochrome;
                                                                                 float NdotV = abs(dot(normalDirection, viewDirection));
@@ -311,7 +317,7 @@ Shader "Yax/DragonShaderV2"
                                                                                                 float nlPow5 = Pow5(1 - NdotL);
                                                                                                 float nvPow5 = Pow5(1 - NdotV);
                                                                                                 float3 directDiffuse = ((1.0f + (fd90 - 1) * nlPow5) * (1 + (fd90 - 1) * nvPow5) * NdotL) * attenColor;
-                                                                                                float3 indirectDiffuse = gi.indirect.diffuse * _ShadowsColor.rgb;
+                                                                                                float3 indirectDiffuse = gi.indirect.diffuse;
                                                                                                 #if defined(LIGHTMAP_ON)
                                                                                                     indirectDiffuse += DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.ambientOrLightmapUV.xy));
                                                                                                 #endif
@@ -320,8 +326,8 @@ Shader "Yax/DragonShaderV2"
                                                                                                 /// Final Color:
                                                                                                 float3 mkTexColor = mKTex * _MKGlowTexColor * _MKGlowTexStrength;
                                                                                                 
-                                                                                                finalColor += diffuse * _DiffuseIntensity + specular + emissiveColor * _EmissionStrength + mkTexColor + _DecalMap_var * _DecalOpacity;
-                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1, 1);
+                                                                                                finalColor += diffuse * _DiffuseIntensity + specular + _DecalMap_var * _DecalOpacity;
+                                                                                                fixed4 finalRGBA = fixed4((finalColor + directDiffuse * 0.1 + indirectDiffuse * 0.1) * 0.3 + emissiveColor * _EmissionStrength + mkTexColor, 1);
                                                                                                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                                                                                                 return finalRGBA;
             }
@@ -333,7 +339,7 @@ Shader "Yax/DragonShaderV2"
             "LightMode" = "ForwardAdd"
             }
             Blend One One
-            Cull Off
+            Cull Back
 
 
             CGPROGRAM
@@ -379,7 +385,7 @@ Shader "Yax/DragonShaderV2"
             uniform float _ColorSaturation;
             uniform float _DiffuseIntensity;
             uniform float _EmissionColorDep;
-            uniform float _ShadowDarkness;
+            uniform float _ShadowIntensity;
             uniform float4 _ShadowsColor;
             struct VertexInput {
                 float4 vertex : POSITION;
@@ -490,12 +496,12 @@ Shader "Yax/DragonShaderV2"
 
                 ////// Lighting:
                                 UNITY_LIGHT_ATTENUATION(attenuation,i, i.posWorld.xyz);
-                                attenuation = pow(attenuation, _ShadowDarkness);
+                                attenuation = pow(attenuation, _ShadowIntensity);
                                 float3 attenColor = attenuation * _LightColor0.xyz;
                                 float Pi = 3.141592654;
                                 float InvPi = 0.31830988618;
                                 ///////// Gloss:
-                                                float smoothness = _Glossiness;
+                                                float smoothness = -_Glossiness;
                                                 float perceptualRoughness = 1.0 - smoothness;
                                                 perceptualRoughness = lerp(perceptualRoughness, 1.0, _SpecularThreshold); // Control highlight spread
                                                 float roughness = perceptualRoughness * perceptualRoughness;
@@ -581,7 +587,7 @@ Shader "Yax/DragonShaderV2"
                                                                                                 float nlPow5 = Pow5(1 - NdotL);
                                                                                                 float nvPow5 = Pow5(1 - NdotV);
                                                                                                 float3 directDiffuse = ((1.0f + (fd90 - 1) * nlPow5) * (1 + (fd90 - 1) * nvPow5) * NdotL) * attenColor;
-                                                                                                float3 indirectDiffuse = gi.indirect.diffuse * _ShadowsColor.rgb;
+                                                                                                float3 indirectDiffuse = gi.indirect.diffuse;
                                                                                                 #if defined(LIGHTMAP_ON)
                                                                                                     indirectDiffuse += DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.ambientOrLightmapUV.xy));
                                                                                                 #endif
@@ -590,8 +596,8 @@ Shader "Yax/DragonShaderV2"
                                                                                                 /// Final Color:
                                                                                                 float3 mkTexColor = mKTex * _MKGlowTexColor * _MKGlowTexStrength;
 
-                                                                                                finalColor += diffuse * _DiffuseIntensity + specular + emissiveColor * _EmissionStrength + mkTexColor + _DecalMap_var * _DecalOpacity;
-                                                                                                fixed4 finalRGBA = fixed4(finalColor * 1, 1);
+                                                                                                finalColor += diffuse * _DiffuseIntensity + specular + _DecalMap_var * _DecalOpacity;
+                                                                                                fixed4 finalRGBA = fixed4((finalColor + directDiffuse * 0.1 + indirectDiffuse * 0.1) * 0.4 + emissiveColor * _EmissionStrength + mkTexColor, 1);
                                                                                                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                                                                                                 return finalRGBA;
             }
@@ -784,7 +790,7 @@ Shader "Yax/DragonShaderV2"
                 float3 specColor = ((_DetailTex_var.a * _SpecularIntensity * 0.02) * _SpecColor.rgb);
                 float specularMonochrome = max(max(specColor.r, specColor.g),specColor.b);
                 diffColor *= (1.0 - specularMonochrome);
-                float roughness = 1.0 - _Glossiness * 0.02;
+                float roughness = 1.0 - _Glossiness * -0.02;
                 float3 albedo = blendedColor.rgb * _ColorSaturation * _DetailTex_var.rgb;
                 o.Albedo = albedo;
 
