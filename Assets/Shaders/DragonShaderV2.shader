@@ -51,6 +51,7 @@ Shader "Yax/DragonShaderV2"
         [Space]
         _ColorSaturation("Colors Saturation", Range(0, 10)) = 1
         _DiffuseIntensity("Lighting Intensity", Range(-10, 10)) = 1
+        [Enum(UnityEngine.Rendering.CullMode)] _Culling ("Culling", Float) = 2
     }
     
         SubShader{
@@ -64,7 +65,7 @@ Shader "Yax/DragonShaderV2"
             Tags {
                 "LightMode" = "ForwardBase"
             }
-            Cull Back
+            Cull [_Culling]
 
 
             CGPROGRAM
@@ -610,7 +611,7 @@ Shader "Yax/DragonShaderV2"
             }
             Offset 1, 1
             Cull Off
-
+        
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -628,19 +629,29 @@ Shader "Yax/DragonShaderV2"
             #pragma multi_compile_fog
             #pragma only_renderers d3d9 d3d11 glcore gles gles3 metal d3d11_9x xboxone ps4 psp2 n3ds wiiu
             #pragma target 3.0
+            
+
+            uniform sampler2D _DetailTex; 
+            uniform float4 _DetailTex_ST;
+        
             struct VertexInput {
                 float4 vertex : POSITION;
+                float2 texcoord0 : TEXCOORD0;
                 float2 texcoord1 : TEXCOORD1;
                 float2 texcoord2 : TEXCOORD2;
             };
+            
             struct VertexOutput {
                 V2F_SHADOW_CASTER;
+                float2 uv0 : TEXCOORD0;
                 float2 uv1 : TEXCOORD1;
                 float2 uv2 : TEXCOORD2;
                 float4 posWorld : TEXCOORD3;
             };
+            
             VertexOutput vert(VertexInput v) {
                 VertexOutput o = (VertexOutput)0;
+                o.uv0 = v.texcoord0;
                 o.uv1 = v.texcoord1;
                 o.uv2 = v.texcoord2;
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
@@ -648,11 +659,15 @@ Shader "Yax/DragonShaderV2"
                 TRANSFER_SHADOW_CASTER(o)
                 return o;
             }
+            
             float4 frag(VertexOutput i, float facing : VFACE) : COLOR {
-                float isFrontFace = (facing >= 0 ? 1 : 0);
-                float faceSign = (facing >= 0 ? 1 : -1);
-                float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
-                SHADOW_CASTER_FRAGMENT(i)
+                    float4 _DetailTex_var = tex2D(_DetailTex, TRANSFORM_TEX(i.uv0, _DetailTex));
+                    clip(_DetailTex_var.a - 0.1);
+                    float isFrontFace = (facing >= 0 ? 1 : 0);
+                    float faceSign = (facing >= 0 ? 1 : -1);
+                    float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
+                    
+                    SHADOW_CASTER_FRAGMENT(i)
             }
             ENDCG
         }
